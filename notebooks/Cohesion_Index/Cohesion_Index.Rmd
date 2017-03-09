@@ -1,0 +1,273 @@
+---
+title: "Cohesion Index Calculation"
+author: "Simon Garnier & Johann Delcourt"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    css: custom.css
+    fig_caption: true
+    fig_width: 9
+    fig_height: 6
+    number_sections: true
+    theme: cosmo
+    toc: true
+csl: http://www.zotero.org/styles/plos-computational-biology
+bibliography: library.bib
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { 
+      equationNumbers: { 
+            autoNumber: "all",
+            formatNumber: function (n) {return n}
+      } 
+  }
+});
+</script>
+
+--- 
+
+# Introduction
+
+This note explains the steps to calculate a new index that estimates the 
+cohesion of a group of individuals in a radial arm maze (note that this index 
+can also be used for all types of mazes or arenas divided into distinct zones). 
+This index is an alternative to the classical methods used to measure group 
+cohesion based on topological and metric relationships between individuals (see 
+@Delcourt2012-dq). These methods cannot be used reliably with a radial arm maze
+because individuals located in adjacent arms might be spatially close, yet 
+incapable of interacting directly with each other.
+
+The new cohesion index $I_c$ introduced here measures the ability of individuals
+to form cohesive groups in a radial arm maze. Its value is maximal (i.e. $I_c=1$)
+when all the animals are located in a single zone of the maze; it is minimal 
+(i.e. $I_c=0$) when the animals are distributed uniformly between all the zones 
+of the maze. 
+
+[Back to top]("#")
+
+---
+
+# Definition of $I_c$
+
+Let $f_i$ be the number of individuals in each zone $z_i$ of the radial arm maze. 
+For a maze with $Z$ zones, the Euclidean distance $D_c$ between all $f_i$ can be 
+calculated as:
+
+$$ D_c = \sqrt{\sum_{i=1}^{Z}(f_i)^2} $$
+
+Let $D_{min}$ be the value of $D_c$ for the least cohesive distribution possible
+of individuals between the zones of the maze (i.e. homogenous distribution of 
+the individuals), and $N$ the total number of individuals in the maze. Therefore 
+the cohesion index $I_c$ can be calculated as:
+
+$$ I_c = \frac{D_c - D_{min}}{N - D_{min}} $$
+
+[Back to top]("#")
+
+---
+
+# Calculating $D_{min}$
+
+## Partitions
+
+$D_{min}$ depends on how $N$ individuals can be partitioned between $Z$ zones in 
+the maze. 
+
+In number theory and combinatorics, a partition of a positive integer $x$, also 
+called an integer partition, is a way of writing $x$ as a sum of positive 
+integers [@Andrews1998-pz; @Nathanson2000-dt; @Andrews2004-xu]. Two sums that 
+differ only in the order of their summands are considered to be the same 
+partition. The number of distinct partitions of $x$, without regard to the 
+ordering of the terms, is defined as $P(x)$.
+
+For example, 4 can be partitioned in five distinct ways; 
+
+$$ 4;\quad 3 + 1;\quad 2 + 2;\quad 2 + 1 + 1;\quad 1 + 1 + 1 + 1 $$
+
+Thus, the number of partitions $P(4) = 5$. As partitions are not order-dependent, 
+$1 + 3$ is the same partition as $3 + 1$ for instance. It is conventional to 
+write the parts of a partition in descending order.
+
+In `R` [@R2016], the `partitions` package [@partitions2016] can be used to obtain
+$P(x)$ (with the function `P`) as well as all the possible partitions of $x$
+(with the function `parts`). For instance, for $x=4$:
+
+```{r}
+if (!require(partitions)) {
+  install.packages("partitions")
+  library(partitions)
+}
+
+x <- 4
+P(x)
+parts(x)
+```
+
+(with each column corresponding to a different partition of $x$).
+
+[Back to top]("#")
+
+---
+
+## Partitions when $Z \geq N$
+
+In the radial maze context, if the number of zones $Z$ is superior or equal to 
+the number of individuals $N$, all the possible partitions of $N$ can be observed, 
+and notably the more distributed partitions where each individual is alone in a 
+zone). The number of partitions and the partitions themselves can therefore be 
+obtained as described above. 
+
+[Back to top]("#")
+
+---
+
+## Partitions when $Z < N$
+
+If the number of zones $Z$ is inferior to the number of individuals $N$, then 
+not all partitions can be observed. For instance, in the case of $N=4$ and $Z=3$,
+it is impossible to observe the partition $1+1+1+1$. The total number of 
+observable partitions in this case is therefore $P(4, 3) = 4$.
+
+In `R`, the number of restricted partitions (i.e. the number of partitions that 
+can be observed given $N$ and $Z$ in our case) can be calculated using the 
+function `R` in the `partitions` package. For instance, for $N=4$ and $Z=3$:
+
+```{r}
+N <- 4
+Z <- 3
+
+R(Z, N, include.zero = TRUE)
+```
+
+And the restricted partitions can be obtained with the function `restrictedparts`
+as follows: 
+
+```{r}
+restrictedparts(N, Z)
+```
+
+(with each column corresponding to a different partition of $N$ in $Z$ zones).
+
+The Supplementary Table 1 below shows the number of restricted partitions for 
+various values of $N$ and $Z$. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+if (!require(pander)) {
+  install.packages("partitions")
+  library(pander)
+}
+
+N <- 1:10
+Z <- 1:10
+res <- matrix(1, nrow = length(N), ncol = length(Z))
+
+for (i in 1:length(N)) {
+  for (j in 1:length(Z)) {
+    if (Z[j] >= N[i]) {
+      res[i, j] <- P(N[i])
+    } else {
+      res[i, j] <- R(Z[j], N[i], include.zero = TRUE)
+    }
+  }
+}
+
+res <- as.data.frame(res)
+
+row.names(res) <- paste0("N=", N)
+names(res) <- paste0("Z=", Z)
+
+pander(res, style = "rmarkdown", split.table = Inf)
+```
+
+Table: **Supplementary Table 1:** Partition number as a function of the number 
+of individuals $N$ and the number of zones $Z$. In our experiment, the partition 
+number $P(10,7)$ is $38$.
+
+[Back to top]("#")
+
+---
+
+## $D_{min}$ as a function of $N$ and $Z$
+
+With `R`, $D_{min}$ can be easily calculated for a given $N$ and $Z$ as follows
+(here $N=4$ and $Z=3$, as before):
+
+```{r}
+N <- 4
+Z <- 3
+
+partitions <- restrictedparts(N, Z)
+Dc <- sqrt(apply(partitions ^ 2, 2, sum))
+min(Dc)
+```
+
+The Supplementary Table 2 below shows the values of $D_{min}$ for various values
+of $N$ and $Z$. 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+N <- 1:10
+Z <- 1:10
+res <- matrix(1, nrow = length(N), ncol = length(Z))
+
+for (i in 2:length(N)) {
+  for (j in 2:length(Z)) {
+    partitions <- restrictedparts(N[i], Z[j])
+    Dc <- sqrt(apply(partitions ^ 2, 2, sum))
+    res[i, j] <- min(Dc)
+  }
+}
+
+int <- res %% 1 == 0
+res <- as.data.frame(res)
+
+res[!int] <- paste0("$\\sqrt{", res[!int] ^ 2, "}$")
+
+row.names(res) <- paste0("N=", N)
+names(res) <- paste0("Z=", Z)
+
+pander(res, style = "rmarkdown", split.table = Inf)
+```
+
+Table: **Supplementary Table 2:** Minimal distance $D_{min}$ as a function of 
+the number of individuals $N$ and the number of zones $Z$. When $Z \geq N$, 
+$D_{min} = \sqrt{N}$. When $Z \leq N$, $D_{min}$ increases when $Z$ decreases. For 
+the particular case where there is just one zone, $D_{max} = D_{min} = N$, in 
+which case $I_c$ cannot be calculated. In our experiment, $D_{min} = 4$.
+
+[Back to top]("#")
+
+---
+
+# Calculating $I_c$ with `R`
+
+For a same number of individuals, $I_c$ values can be different if the number of 
+zones varies, but $I_c$ values are always between 0 (worst group cohesion 
+possible) and 1 (best group cohesion possible). When $Z \leq N$, $D_{min}$ 
+increases as $Z$ decreases. In our experiment, with 7 zones and 10 fish, the 
+partition number $P(10,7)$ is 38, and not 42 as in $P(10,10)$ or $P(10,12)$ for 
+example; as a consequence and $D_c$ varies between $D_{max} = 10$ and $D_{min} = 4$. 
+
+For convenience, we provide with our study a `R` package - called `projectRadial` 
+containing a function - called `Ic` - for computing $I_c$ for any observed 
+partitions of fish in radial arm mazes with any arbitrary number of arms. `Ic`
+takes a single input, which should be a data frame containing the number of 
+animals in each zone of the radial arm maze. The data frame should be organized 
+as follows: each column must correspond to a zone of the radial arm maze and 
+each row must correspond to a different observation.
+
+An example of using `Ic` with actual data is provided below: 
+
+```{r}
+
+
+
+```
+
+[Back to top]("#")
+
+---
+
+# References {-}
+

@@ -1,0 +1,66 @@
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 18px;
+  text-indent: 2em;
+}
+
+h3 {
+  font-size: 18px;
+  text-indent: 3em;
+}
+
+p {
+  text-align: justify;
+}
+
+.header-section-number::after, 
+.toc-section-number::after {
+  content: " - ";
+}
+
+hr {
+  border: none;
+  height: 3px;
+  color: #EEEEEE; 
+  background-color: #EEEEEE; 
+}
+
+.caption {
+  text-align: justify;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 6pt;
+  padding-bottom: 6pt;
+}
+
+pre {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+video {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+img {
+  display: table;
+  margin: 0 auto;
+  max-height: 400px;
+  width: auto;
+}
+
+table {
+  font-size: 12px;
+}
+
+.shiny {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
