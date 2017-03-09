@@ -257,12 +257,37 @@ animals in each zone of the radial arm maze. The data frame should be organized
 as follows: each column must correspond to a zone of the radial arm maze and 
 each row must correspond to a different observation.
 
-An example of using `Ic` with actual data is provided below: 
+An example of using `Ic` with actual data (10 fish in a radial maze with 6 arms 
+and a central zone) is provided below: 
 
 ```{r}
+# Install and load the 'projecRadial' package
+if (!require(pacman)) {
+  install.packages("pacman")
+  library(partitions)
+} 
+
+p_load_gh("sjmgarnier/projectRadial")
 
 
+# Calculate Ic with data provided in the 'projecRadial' package
+data_path <- system.file("extdata", "sample_data.csv", package = "projectRadial")
+dat <- read.csv(data_path)
 
+dat$Ic <- Ic(dat[, 2:7])
+
+
+# Plot
+if (!require(ggplot2)) {
+  install.packages("ggplot2")
+  library(ggplot2)
+}
+
+ggplot(dat, aes(x = TimeInHours, y = Ic)) +
+  geom_line() + 
+  xlab("Time (hours)") + 
+  ylab(bquote(I[c])) +
+  theme_minimal(base_size = 18)
 ```
 
 [Back to top]("#")
