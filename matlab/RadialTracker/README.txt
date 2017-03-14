@@ -7,7 +7,7 @@
 
 ## INSTRUCTIONS
 
-1. Download the folder containing RadialTracker from https://github.com/sjmgarnier/projectRadial/matlab
+1. Download the folder containing RadialTracker from https://github.com/sjmgarnier/projectRadial/tree/master/matlab/RadialTracker
 2. Open Matlab
 3. Either:
   a. add the folder containing RadialTracker to the Matlab path,
