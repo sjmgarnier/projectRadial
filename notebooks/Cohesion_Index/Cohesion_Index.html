@@ -9,9 +9,9 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Simon Garnier &amp; Johann Delcourt" />
+<meta name="author" content="Johann Delcourt, Noam Miller, Iain Couzin, &amp; Simon Garnier" />
 
-<meta name="date" content="2017-03-09" />
+<meta name="date" content="2017-03-14" />
 
 <title>Cohesion Index Calculation</title>
 
@@ -119,8 +119,8 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Cohesion Index Calculation</h1>
-<h4 class="author"><em>Simon Garnier &amp; Johann Delcourt</em></h4>
-<h4 class="date"><em>March 09, 2017</em></h4>
+<h4 class="author"><em>Johann Delcourt, Noam Miller, Iain Couzin, &amp; Simon Garnier</em></h4>
+<h4 class="date"><em>March 14, 2017</em></h4>
 
 </div>
 
@@ -552,7 +552,7 @@ min(Dc)</code></pre>
 <h1><span class="header-section-number">4</span> Calculating <span class="math inline">\(I_c\)</span> with <code>R</code></h1>
 <p>For a same number of individuals, <span class="math inline">\(I_c\)</span> values can be different if the number of zones varies, but <span class="math inline">\(I_c\)</span> values are always between 0 (worst group cohesion possible) and 1 (best group cohesion possible). When <span class="math inline">\(Z \leq N\)</span>, <span class="math inline">\(D_{min}\)</span> increases as <span class="math inline">\(Z\)</span> decreases. In our experiment, with 7 zones and 10 fish, the partition number <span class="math inline">\(P(10,7)\)</span> is 38, and not 42 as in <span class="math inline">\(P(10,10)\)</span> or <span class="math inline">\(P(10,12)\)</span> for example; as a consequence and <span class="math inline">\(D_c\)</span> varies between <span class="math inline">\(D_{max} = 10\)</span> and <span class="math inline">\(D_{min} = 4\)</span>.</p>
 <p>For convenience, we provide with our study a <code>R</code> package - called <code>projectRadial</code> containing a function - called <code>Ic</code> - for computing <span class="math inline">\(I_c\)</span> for any observed partitions of fish in radial arm mazes with any arbitrary number of arms. <code>Ic</code> takes a single input, which should be a data frame containing the number of animals in each zone of the radial arm maze. The data frame should be organized as follows: each column must correspond to a zone of the radial arm maze and each row must correspond to a different observation.</p>
-<p>An example of using <code>Ic</code> with actual data (10 fish in a radial maze with 6 arms and a central zone) is provided below:</p>
+<p>An example of using <code>Ic</code> with actual data (20 fish in a radial maze with 6 arms and a central zone) is provided below:</p>
 <pre class="r"><code># Install and load the 'projecRadial' package
 if (!require(pacman)) {
   install.packages(&quot;pacman&quot;)

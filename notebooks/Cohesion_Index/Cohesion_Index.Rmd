@@ -1,16 +1,18 @@
 ---
 title: "Cohesion Index Calculation"
-author: "Simon Garnier & Johann Delcourt"
-date: "`r format(Sys.time(), '%B %d, %Y')`"
+author: "Johann Delcourt, Noam Miller, Iain Couzin, & Simon Garnier"
+date: "March 14, 2017"
 output:
+  word_document:
+    toc: yes
   html_document:
     css: custom.css
-    fig_caption: true
-    fig_width: 9
+    fig_caption: yes
     fig_height: 6
-    number_sections: true
+    fig_width: 9
+    number_sections: yes
     theme: cosmo
-    toc: true
+    toc: yes
 csl: http://www.zotero.org/styles/plos-computational-biology
 bibliography: library.bib
 ---
@@ -257,7 +259,7 @@ animals in each zone of the radial arm maze. The data frame should be organized
 as follows: each column must correspond to a zone of the radial arm maze and 
 each row must correspond to a different observation.
 
-An example of using `Ic` with actual data (10 fish in a radial maze with 6 arms 
+An example of using `Ic` with actual data (20 fish in a radial maze with 6 arms 
 and a central zone) is provided below: 
 
 ```{r}
