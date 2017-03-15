@@ -157,7 +157,7 @@ various values of $N$ and $Z$.
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
 if (!require(pander)) {
-  install.packages("partitions")
+  install.packages("pander")
   library(pander)
 }
 
@@ -266,7 +266,7 @@ and a central zone) is provided below:
 # Install and load the 'projecRadial' package
 if (!require(pacman)) {
   install.packages("pacman")
-  library(partitions)
+  library(pacman)
 } 
 
 p_load_gh("sjmgarnier/projectRadial")
