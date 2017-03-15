@@ -1,10 +1,11 @@
 Package: projectRadial
 Type: Package
-Title: Accompanying Package for ADD AUTHOR NAMES HERE submitted
+Title: Accompanying Package for Delcourt, Miller, Couzin, and Garnier (submitted)
 Version: 1.0.0
 Authors@R: person("Simon", "Garnier", email = "garnier@njit.edu", role = "cre")
 Description: This package contains the accompanying material and code for the 
-    manuscript entitled "ADD TITLE HERE" by ADD AUTHOR NAMES HERE.
+    manuscript entitled "The radial arm maze as a new paradigm to study collective 
+    behaviour" by Delcourt, Miller, Couzin, and Garnier (submitted).
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -12,6 +13,6 @@ Imports:
     partitions (>= 1.9-18)
 Suggests:
     ggplot2 (>= 2.2.1),
-    dplyr (>= 0.5.0),
-    pacman (>= 0.4.1)
+    pacman (>= 0.4.1),
+    pander (>= 0.6.0)
 RoxygenNote: 6.0.1
