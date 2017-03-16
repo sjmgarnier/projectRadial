@@ -259,7 +259,7 @@ animals in each zone of the radial arm maze. The data frame should be organized
 as follows: each column must correspond to a zone of the radial arm maze and 
 each row must correspond to a different observation.
 
-An example of using `Ic` with actual data (20 fish in a radial maze with 6 arms 
+An example of using `Ic` with actual data (10 fish in a radial maze with 6 arms 
 and a central zone) is provided below: 
 
 ```{r}
