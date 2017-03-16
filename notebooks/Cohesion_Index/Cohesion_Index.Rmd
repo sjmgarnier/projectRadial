@@ -263,7 +263,7 @@ An example of using `Ic` with actual data (20 fish in a radial maze with 6 arms
 and a central zone) is provided below: 
 
 ```{r}
-# Install and load the 'projecRadial' package
+# Install and load the 'projectRadial' package
 if (!require(pacman)) {
   install.packages("pacman")
   library(pacman)
@@ -272,7 +272,7 @@ if (!require(pacman)) {
 p_load_gh("sjmgarnier/projectRadial")
 
 
-# Calculate Ic with data provided in the 'projecRadial' package
+# Calculate Ic with data provided in the 'projectRadial' package
 data_path <- system.file("extdata", "sample_data.csv", package = "projectRadial")
 dat <- read.csv(data_path)
 
